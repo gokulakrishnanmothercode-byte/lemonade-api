@@ -27,8 +27,11 @@ public class UserFilter extends OncePerRequestFilter {
 
 
         String token = request.getHeader("Authorization");
-        if(token == null){
-            throw new  TokenNotValidException("Token not valid");
+        if (token == null || token.isBlank()) {
+            throw new TokenNotValidException("Token not valid");
+        }
+        if (token.startsWith("Bearer ")) {
+            token = token.substring(7).strip();
         }
 
         UserAuthentication authentication =  UserAuthentication
